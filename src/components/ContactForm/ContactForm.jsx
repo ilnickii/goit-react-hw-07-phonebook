@@ -1,6 +1,5 @@
 import css from './ContactForm.module.css';
 import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
 import { addContact } from '../../redux/contactSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectContacts } from 'redux/selectors';
@@ -13,20 +12,20 @@ export const ContactForm = () => {
     const hasDuplicateContacts = contacts.some(
       contact =>
         contact.name.toLowerCase() === userContacts.name.toLowerCase() ||
-        contact.number === userContacts.number
+        contact.phone === userContacts.phone
     );
 
     if (hasDuplicateContacts) {
       alert(
-        `${userContacts.name} or ${userContacts.number} is already in contacts`
+        `${userContacts.name} or ${userContacts.phone} is already in contacts`
       );
       return;
     }
     dispatch(addContact(userContacts));
   };
 
-  const [data, setData] = useState({ name: '', number: '' });
-  const { name, number } = data;
+  const [data, setData] = useState({ name: '', phone: '' });
+  const { name, phone } = data;
 
   const handleInputChange = ({ target }) => {
     const { name, value } = target;
@@ -35,13 +34,12 @@ export const ContactForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
     const userContacts = {
-      id: nanoid(),
       name: name,
-      number: number,
+      phone: phone,
     };
 
     handleAddContact(userContacts);
-    setData({ name: '', number: '' });
+    setData({ name: '', phone: '' });
   };
 
   return (
@@ -61,10 +59,10 @@ export const ContactForm = () => {
         <input
           className={css.formInput}
           type="tel"
-          value={number}
+          value={phone}
           onChange={handleInputChange}
-          name="number"
-          placeholder="Number"
+          name="phone"
+          placeholder="phone"
           required
         />
       </label>
